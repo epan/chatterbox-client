@@ -8,6 +8,7 @@ class Chatterbox {
     var thisObj = this;
     this.fetch(function(data) {
       thisObj.renderRooms(data);
+      thisObj.renderMessages(data, 'lobby');
     }, '?order=-createdAt&limit=1000');
   }
 
@@ -42,13 +43,20 @@ class Chatterbox {
     });
   }
 
-  renderAllMessages (urlParams) {
+  renderMessages (response, room) {
     var thisObj = this;
-    this.fetch(function(data) {
-      data.results.forEach(function(message) {
-        thisObj.renderMessage(message);
-      });
-    }, urlParams);
+
+    var filteredMessages = response.results.filter(function(message) {
+      if (message.roomname === room) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    filteredMessages.forEach(function(message) {
+      thisObj.renderMessage(message);
+    });
   }
 
   clearMessages () {
@@ -61,6 +69,9 @@ class Chatterbox {
 
   renderRoom (room) {
     $('#roomSelect').append(`<option value="${room}">${room}</option>`);
+    if (room === 'lobby') {
+      $('#roomSelect').val('lobby');
+    }
   }
 
   renderRooms (response) {
