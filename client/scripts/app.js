@@ -25,9 +25,9 @@ class Chatterbox {
     });
   }
 
-  fetch (successCallback) {
+  fetch (successCallback, urlCode = '') {
     return $.ajax({
-      url: this.server,
+      url: this.server + urlCode,
       type: 'GET',
       contentType: 'application/json',
       success: function(data) {
@@ -39,13 +39,13 @@ class Chatterbox {
     });
   }
 
-  renderAllMessages () {
+  renderAllMessages (urlParams) {
     var thisObj = this;
     this.fetch(function(data) {
       data.results.forEach(function(message) {
         thisObj.renderMessage(message);
       });
-    });
+    }, urlParams);
   }
 
   clearMessages () {
@@ -54,6 +54,12 @@ class Chatterbox {
 
   renderMessage (message) {
     $('#chats').append(`<p>[${message.roomname}] @${message.username}: ${message.text}</p>`);
+  }
+
+  renderRoom (room) {
+    var thisObj = this;
+    $('#roomSelect').append(`<option value="${room}">${room}</option>`);
+    // this.renderAllMessages(`?where={"roomname":"${room}"}`);
   }
 }
 
