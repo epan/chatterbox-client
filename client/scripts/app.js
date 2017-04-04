@@ -3,6 +3,7 @@ class Chatterbox {
     this.name = value;
     this.server = 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages';
     this.SEARCH_PARAMS = '?order=-createdAt&limit=1000';
+    this.friends = [];
     this.lastFetchedAt;
   }
 
@@ -116,9 +117,11 @@ class Chatterbox {
   }
 
   renderMessage (message) {
-    var a = $('<p></p>');
-    a.text(`@${message.username}: ${message.text}`)
-    $('#chats').append(a);
+    var user = $('<span class="username"></p>').text(`@${message.username}:`);
+    var message = $('<p></p>').text(` ${message.text}`).prepend(user);
+    // var user = $('<span class="username"></span>');
+    // a.text(`@${message.username}: ${message.text}`)
+    $('#chats').append(message);
   }
 
   renderRoom (room, desiredRoom) {
