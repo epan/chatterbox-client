@@ -37,7 +37,7 @@ class Chatterbox {
   }
 
   fetch (successCallback, urlCode = '') {
-    return $.ajax({
+    $.ajax({
       url: this.server + urlCode,
       type: 'GET',
       contentType: 'application/json',
@@ -80,7 +80,9 @@ class Chatterbox {
   }
 
   renderMessage (message) {
-    $('#chats').append(`<p>[${message.roomname}] @${message.username}: ${message.text}</p>`);
+    var a = $('<p></p>');
+    a.text(`[${message.roomname}] @${message.username}: ${message.text}`)
+    $('#chats').append(a);
   }
 
   renderRoom (room, desiredRoom) {
