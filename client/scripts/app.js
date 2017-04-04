@@ -39,6 +39,7 @@ class Chatterbox {
         thisObj.send(message);
         $('.room-input').val('');
         $('.room-form').hide();
+        $('.chat-input').focus();
       })
 
       $('body').on('click', 'form', function(event) {
