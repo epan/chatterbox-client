@@ -25,6 +25,7 @@ class Chatterbox {
           roomname: $('#roomSelect').val()
         }
         thisObj.send(message);
+        $('.chat-input').val('');
       })
 
       $('body').on('click', '.room-submit', function() {
