@@ -13,9 +13,11 @@ class Chatterbox {
 
       $('#roomSelect').change(function() {
         thisObj.clearMessages();
-        // $(this).val()
-        console.log($(this).val());
         thisObj.getNewMessages($(this).val());
+        $('.room-form').hide();
+        if ($(this).val() === '- Add new room -') {
+          $('.room-form').show();
+        }
       });
 
       $('body').on('click', '.chat-submit', function() {
@@ -35,9 +37,11 @@ class Chatterbox {
           roomname: $('.room-input').val()
         }
         thisObj.send(message);
+        $('.room-input').val('');
+        $('.room-form').hide();
       })
 
-      $('form').on('click', function(event) {
+      $('body').on('click', 'form', function(event) {
         event.preventDefault();
       });
 
@@ -110,7 +114,7 @@ class Chatterbox {
   renderMessage (message) {
     var a = $('<p></p>');
     a.text(`@${message.username}: ${message.text}`)
-    $('#chats').hide().append(a).slideDown(200);
+    $('#chats').append(a);
   }
 
   renderRoom (room, desiredRoom) {
@@ -133,6 +137,7 @@ class Chatterbox {
     responseRooms.forEach(function(room) {
       thisObj.renderRoom(room, desiredRoom);
     });
+    this.renderRoom('- Add new room -', desiredRoom);
   }
 }
 

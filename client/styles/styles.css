@@ -104,7 +104,12 @@ form input[type=text] {
   color: #666;
 }
 
-.chat-input, .chat-submit {
+#roomSelect option {
+  width:100px;
+}
+
+.chat-input, .chat-submit,
+.room-input, .room-submit {
   font-size: 16px;
   font-family: Roboto;
   line-height: 1.9;
@@ -112,13 +117,10 @@ form input[type=text] {
   border-radius: 3px;
   border-style: solid 1px #ccc;
   color: #333;
-}
-
-.chat-input {
   width: 320px;
 }
 
-.chat-submit {
+.chat-submit, .room-submit {
   background-color: #acecec;
   border-color: #acecec;
   width: 136px;
@@ -126,6 +128,10 @@ form input[type=text] {
 
 form {
   margin-bottom: 0px;
+}
+
+.room-form {
+  display: none;
 }
 
 #chats p {
