@@ -2,14 +2,21 @@ class Chatterbox {
   constructor(value) {
     this.name = value;
     this.server = 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages';
+    this.SEARCH_PARAMS = '?order=-createdAt&limit=1000';
   }
 
   init () {
     var thisObj = this;
     this.fetch(function(data) {
-      thisObj.renderRooms(data);
+      thisObj.renderRooms(data, 'lobby');
       thisObj.renderMessages(data, 'lobby');
-    }, '?order=-createdAt&limit=1000');
+      $('#roomSelect').change(function() {
+        thisObj.clearMessages();
+        // $(this).val()
+        console.log($(this).val());
+        thisObj.getNewMessages($(this).val());
+      });
+    }, thisObj.SEARCH_PARAMS);
   }
 
   send (message) {
@@ -43,6 +50,15 @@ class Chatterbox {
     });
   }
 
+  getNewMessages (room) {
+    var thisObj = this;
+    this.fetch(function(data) {
+      console.log(data);
+      thisObj.renderRooms(data, room);
+      thisObj.renderMessages(data, room);
+    }, thisObj.SEARCH_PARAMS);
+  }
+
   renderMessages (response, room) {
     var thisObj = this;
 
@@ -67,14 +83,15 @@ class Chatterbox {
     $('#chats').append(`<p>[${message.roomname}] @${message.username}: ${message.text}</p>`);
   }
 
-  renderRoom (room) {
+  renderRoom (room, desiredRoom) {
     $('#roomSelect').append(`<option value="${room}">${room}</option>`);
-    if (room === 'lobby') {
-      $('#roomSelect').val('lobby');
+    if (room === desiredRoom) {
+      $('#roomSelect').val(desiredRoom);
     }
   }
 
-  renderRooms (response) {
+  renderRooms (response, desiredRoom) {
+    $('#roomSelect').children().remove();
     var thisObj = this;
 
     var responseRooms = _.uniq(response.results.map(function(message) {
@@ -84,7 +101,7 @@ class Chatterbox {
     console.log(responseRooms);
 
     responseRooms.forEach(function(room) {
-      thisObj.renderRoom(room);
+      thisObj.renderRoom(room, desiredRoom);
     });
   }
 }
