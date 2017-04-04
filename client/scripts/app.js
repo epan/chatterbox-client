@@ -13,6 +13,7 @@ class Chatterbox {
       thisObj.renderRooms(data, 'lobby');
       thisObj.renderMessages(data, 'lobby');
 
+      // Select a different room
       $('#roomSelect').change(function() {
         thisObj.clearMessages();
         thisObj.getNewMessages($(this).val());
@@ -22,6 +23,7 @@ class Chatterbox {
         }
       });
 
+      // Send chat message
       $('body').on('click', '.chat-submit', function() {
         var message = {
           username: window.localStorage.username,
@@ -32,6 +34,7 @@ class Chatterbox {
         $('.chat-input').val('');
       })
 
+      // Create new room
       $('body').on('click', '.room-submit', function() {
         var message = {
           username: window.localStorage.username,
@@ -44,6 +47,19 @@ class Chatterbox {
         $('.chat-input').focus();
       })
 
+      // Add user to friend list
+      $('body').on('click', '.username', function() {
+        var username = $(this).text();
+        if (thisObj.friends.includes(username)) {
+          var userIndex = thisObj.friends.indexOf(username);
+          thisObj.friends.splice(userIndex, 1);
+        } else {
+          thisObj.friends.push(username);
+        }
+        console.log(JSON.stringify(thisObj.friends));
+      });
+
+      // Prevent form submits from refreshing page
       $('body').on('click', 'form', function(event) {
         event.preventDefault();
       });
@@ -117,8 +133,8 @@ class Chatterbox {
   }
 
   renderMessage (message) {
-    var user = $('<span class="username"></p>').text(`@${message.username}:`);
-    var message = $('<p></p>').text(` ${message.text}`).prepend(user);
+    var user = $('<span class="username"></p>').text(`${message.username}`);
+    var message = $('<p></p>').text(`: ${message.text}`).prepend(user);
     // var user = $('<span class="username"></span>');
     // a.text(`@${message.username}: ${message.text}`)
     $('#chats').append(message);
