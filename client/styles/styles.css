@@ -1,5 +1,5 @@
 body {
-    background: #dec5c5;
+    background: #c5d7de;
     text-align: center;
     padding: 0 25px;
     font-family: 'Roboto', sans-serif;
@@ -106,14 +106,22 @@ form input[type=text] {
   font-size: 16px;
   font-family: Roboto;
   line-height: 1.9;
-  padding-left: 7px;
-  padding-right: 7px;
+  padding: 4px 8px;
   border-radius: 3px;
   border-style: solid 1px #ccc;
   color: #333;
 }
 
+.chat-input {
+  width: 320px;
+}
+
 .chat-submit {
   background-color: #acecec;
-  border: none;
+  border-color: #acecec;
+  width: 136px;
+}
+
+form {
+  margin-bottom: 0px;
 }

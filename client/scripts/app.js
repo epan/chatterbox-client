@@ -36,6 +36,10 @@ class Chatterbox {
         thisObj.send(message);
       })
 
+      $('form').on('click', function(event) {
+        event.preventDefault();
+      });
+
     }, thisObj.SEARCH_PARAMS);
   }
 
