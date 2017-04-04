@@ -127,3 +127,8 @@ form input[type=text] {
 form {
   margin-bottom: 0px;
 }
+
+#chats p {
+  border-bottom: solid 1px #eee;
+  padding-bottom: 15px;
+}
