@@ -15,7 +15,8 @@
         if (newSearch !== '' & newSearch !== '?') {
           newSearch += '&';
         }
-        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+        window.localStorage.username = prompt('What is your name?');
+        newSearch += 'username=' + (window.localStorage.username || 'anonymous');
         window.location.search = newSearch;
       }
     </script>
@@ -29,6 +30,15 @@
       <!-- Your HTML goes here! -->
     </div>
     <select id="roomSelect"></select>
-    <div id="chats"></div>
+    <div>
+      <input class="chat-input" type="text" name="message" value="">
+      <input class="chat-submit" type="button" name="send" value="send">
+    </div>
+    <div>
+      <input class="room-input" type="text" name="room" value="">
+      <input class="room-submit" type="button" name="create-room" value="create room">
+    </div>
+    <div id="chats">
+    </div>
   </body>
 </html>

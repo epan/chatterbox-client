@@ -10,16 +10,37 @@ class Chatterbox {
     this.fetch(function(data) {
       thisObj.renderRooms(data, 'lobby');
       thisObj.renderMessages(data, 'lobby');
+
       $('#roomSelect').change(function() {
         thisObj.clearMessages();
         // $(this).val()
         console.log($(this).val());
         thisObj.getNewMessages($(this).val());
       });
+
+      $('body').on('click', '.chat-submit', function() {
+        var message = {
+          username: window.localStorage.username,
+          text: $('.chat-input').val(),
+          roomname: $('#roomSelect').val()
+        }
+        thisObj.send(message);
+      })
+
+      $('body').on('click', '.room-submit', function() {
+        var message = {
+          username: window.localStorage.username,
+          text: `This room was created by ${window.localStorage.username} at ${new Date()}!`,
+          roomname: $('.room-input').val()
+        }
+        thisObj.send(message);
+      })
+
     }, thisObj.SEARCH_PARAMS);
   }
 
   send (message) {
+    var thisObj = this;
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: this.server,
@@ -27,7 +48,8 @@ class Chatterbox {
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
-        console.log();
+
+        thisObj.getNewMessages(message.roomname);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -52,6 +74,7 @@ class Chatterbox {
 
   getNewMessages (room) {
     var thisObj = this;
+    thisObj.clearMessages();
     this.fetch(function(data) {
       console.log(data);
       thisObj.renderRooms(data, room);
