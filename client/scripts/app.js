@@ -5,7 +5,10 @@ class Chatterbox {
   }
 
   init () {
-
+    var thisObj = this;
+    this.fetch(function(data) {
+      thisObj.renderRooms(data);
+    }, '?order=-createdAt&limit=1000');
   }
 
   send (message) {
@@ -57,10 +60,23 @@ class Chatterbox {
   }
 
   renderRoom (room) {
-    var thisObj = this;
     $('#roomSelect').append(`<option value="${room}">${room}</option>`);
-    // this.renderAllMessages(`?where={"roomname":"${room}"}`);
+  }
+
+  renderRooms (response) {
+    var thisObj = this;
+
+    var responseRooms = _.uniq(response.results.map(function(message) {
+      return message.roomname;
+    }));
+
+    console.log(responseRooms);
+
+    responseRooms.forEach(function(room) {
+      thisObj.renderRoom(room);
+    });
   }
 }
 
 var app = new Chatterbox('alex');
+app.init();
