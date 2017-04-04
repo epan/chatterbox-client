@@ -132,3 +132,7 @@ form {
   border-bottom: solid 1px #eee;
   padding-bottom: 15px;
 }
+
+#main form {
+  padding-bottom: 0;
+}
