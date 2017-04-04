@@ -3,6 +3,7 @@ class Chatterbox {
     this.name = value;
     this.server = 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages';
     this.SEARCH_PARAMS = '?order=-createdAt&limit=1000';
+    this.lastFetchedAt;
   }
 
   init () {
@@ -69,12 +70,15 @@ class Chatterbox {
   }
 
   fetch (successCallback, urlCode = '') {
+    var thisObj = this;
     $.ajax({
       url: this.server + urlCode,
       type: 'GET',
       contentType: 'application/json',
       success: function(data) {
         successCallback(data);
+        thisObj.lastFetchedAt = data.results[0].createdAt;
+        console.log("latest chat at", thisObj.lastFetchedAt);
       },
       error: function () {
         console.log('it broke');
@@ -86,7 +90,6 @@ class Chatterbox {
     var thisObj = this;
     thisObj.clearMessages();
     this.fetch(function(data) {
-      console.log(data);
       thisObj.renderRooms(data, room);
       thisObj.renderMessages(data, room);
     }, thisObj.SEARCH_PARAMS);
@@ -132,8 +135,6 @@ class Chatterbox {
     var responseRooms = _.uniq(response.results.map(function(message) {
       return message.roomname;
     }));
-
-    console.log(responseRooms);
 
     responseRooms.forEach(function(room) {
       thisObj.renderRoom(room, desiredRoom);
