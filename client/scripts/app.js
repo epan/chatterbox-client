@@ -104,7 +104,7 @@ class Chatterbox {
 
   renderMessage (message) {
     var a = $('<p></p>');
-    a.text(`[${message.roomname}] @${message.username}: ${message.text}`)
+    a.text(`@${message.username}: ${message.text}`)
     $('#chats').append(a);
   }
 
