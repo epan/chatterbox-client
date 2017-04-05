@@ -10,6 +10,8 @@ class Chatterbox {
   init () {
     var thisObj = this;
     this.fetch(function(data) {
+
+      // Initialize app to lobby messages
       thisObj.renderRooms(data, 'lobby');
       thisObj.renderMessages(data, 'lobby');
 
@@ -47,7 +49,7 @@ class Chatterbox {
         $('.chat-input').focus();
       })
 
-      // Add user to friend list
+      // Add and remove user from friend list
       $('body').on('click', '.username', function() {
         var username = $(this).text();
         if (thisObj.friends.includes(username)) {
@@ -56,6 +58,10 @@ class Chatterbox {
         } else {
           thisObj.friends.push(username);
         }
+
+        thisObj.clearMessages();
+        thisObj.getNewMessages($('#roomSelect').val());
+
         console.log(JSON.stringify(thisObj.friends));
       });
 
@@ -133,11 +139,13 @@ class Chatterbox {
   }
 
   renderMessage (message) {
-    var user = $('<span class="username"></p>').text(`${message.username}`);
-    var message = $('<p></p>').text(`: ${message.text}`).prepend(user);
-    // var user = $('<span class="username"></span>');
-    // a.text(`@${message.username}: ${message.text}`)
-    $('#chats').append(message);
+    var user = $('<span class="username"></span>').text(`${message.username}`);
+    var post = $('<p></p>').text(`: ${message.text}`).prepend(user);
+    if (this.friends.includes(message.username)) {
+      post.addClass('friend')
+    }
+
+    $('#chats').append(post);
   }
 
   renderRoom (room, desiredRoom) {

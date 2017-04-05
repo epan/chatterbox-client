@@ -136,7 +136,8 @@ form {
 
 #chats p {
   border-bottom: solid 1px #eee;
-  padding-bottom: 15px;
+  margin: 5px 0px;
+  padding: 10px 10px 11px;
 }
 
 #main form {
